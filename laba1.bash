@@ -48,7 +48,7 @@ do
 				read -r answer || exit 0
 				if [ $answer = yes ] || [ $answer = y ]
 				then
-					rm -R "$catalog_name" 2>> $HOME/lab1_err || echo "Неудалось удалить каталог" >&2
+					rm -R -- "$catalog_name" 2>> $HOME/lab1_err || echo "Неудалось удалить каталог" >&2
 				fi
 			else
 				echo "Каталог не существует!" >&2
