@@ -1,7 +1,4 @@
-#!/bin/sh
-CURRENT_DIR=`pwd`
-RED="\033[1;31m"
-NOCOLOR="\033[0m"
+#!/usr/bin/bash
 welcome() {
 	echo "Добро пожаловать! Выбирите действие:"
 	echo "[1] Создать каталог"
@@ -19,38 +16,46 @@ do
 	case $line in
 		1)
 			echo "Введите название каталога:"
-			read catalog_name
-			mkdir "$catalog_name" 2>> $CURRENT_DIR/lab1_err || echo "${RED}Неудалось создать каталог${NOCOLOR}"
+			read catalog_name || exit 0
+			mkdir -- "$catalog_name" 2>> $HOME/lab1_err || echo "Неудалось создать каталог" >&2
 		;;
 		2)
 			echo "Введите каталог:"
-			read catalog_name
-			cd "$catalog_name" 2>> $CURRENT_DIR/lab1_err || echo "${RED}Неудалось перейти в каталог${NOCOLOR}"
+			read catalog_name || exit 0
+			cd -- "$catalog_name" 2>> $HOME/lab1_err || echo "Неудалось перейти в каталог" >&2
 		;;
 		3)
-			ls 2>> $CURRENT_DIR/lab1_err
+			if [ -d $(pwd) ]
+			then
+				ls
+			else
+				echo "Неудалось просмотреть содержимое каталога" >&2
+			fi
 		;;
 		4)
 			echo "Файл для перемещения:"
-			read current_path
+			read current_path || exit 0
 			echo "Куда перенести:"
-			read target_path
-			mv "$current_path" "$target_path" 2>> $CURRENT_DIR/lab1_err || echo "${RED}Неудалось переместить файл${NOCOLOR}"
+			read target_path || exit 0
+			mv -- "$current_path" "$target_path" 2>> $HOME/lab1_err || echo "Неудалось переместить файл" >&2
 		;;
 		5)
 			echo "Введите каталог:"
-			read catalog_name
-			echo "rm: удалить каталог \"$catalog_name\"?"
-			read answer
-			if [ "${answer}" = "y" ] || [ "${answer}" = "Y" ];
+			read catalog_name || exit 0
+			if [ -d $catalog_name ]
 			then
-				rm -R "$catalog_name" 2>> $CURRENT_DIR/lab1_err || echo "${RED}Неудалось удалить каталог${NOCOLOR}"
+				echo "rm: remove directory $catalog_name (yes/no)?"
+				read answer || exit 0
+				if [ $answer = yes ] || [ $answer = y ]
+				then
+					rm -R "$catalog_name" 2>> $HOME/lab1_err || echo "Неудалось удалить каталог" >&2
+				fi
+			else
+				echo "Каталог не существует!" >&2
 			fi
 		;;
 		6)
-			exit 0
-		;;
-		*)
+			echo "Пока"
 			exit 0
 		;;
 	esac
