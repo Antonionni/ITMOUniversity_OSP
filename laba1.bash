@@ -16,12 +16,12 @@ do
 	case $line in
 		1)
 			echo "Введите название каталога:"
-			read catalog_name || exit 0
+			read -r catalog_name || exit 0
 			mkdir -- "$catalog_name" 2>> $HOME/lab1_err || echo "Неудалось создать каталог" >&2
 		;;
 		2)
 			echo "Введите каталог:"
-			read catalog_name || exit 0
+			read -r catalog_name || exit 0
 			cd -- "$catalog_name" 2>> $HOME/lab1_err || echo "Неудалось перейти в каталог" >&2
 		;;
 		3)
@@ -34,18 +34,18 @@ do
 		;;
 		4)
 			echo "Файл для перемещения:"
-			read current_path || exit 0
+			read -r current_path || exit 0
 			echo "Куда перенести:"
-			read target_path || exit 0
+			read -r target_path || exit 0
 			mv -- "$current_path" "$target_path" 2>> $HOME/lab1_err || echo "Неудалось переместить файл" >&2
 		;;
 		5)
 			echo "Введите каталог:"
-			read catalog_name || exit 0
+			read -r catalog_name || exit 0
 			if [ -d $catalog_name ]
 			then
 				echo "rm: remove directory $catalog_name (yes/no)?"
-				read answer || exit 0
+				read -r answer || exit 0
 				if [ $answer = yes ] || [ $answer = y ]
 				then
 					rm -R "$catalog_name" 2>> $HOME/lab1_err || echo "Неудалось удалить каталог" >&2
